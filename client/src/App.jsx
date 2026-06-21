@@ -13,6 +13,7 @@ import {
 import { themeSettings } from "./theme";
 import Layout from "./scenes/Layout";
 import Dashboard from "./scenes/Dashboard";
+import Orders from "./scenes/Orders";
 import Products from "./scenes/Products";
 import Stocks from "./scenes/Stocks";
 import Workers from "./scenes/Workers";
@@ -38,6 +39,7 @@ const router = createBrowserRouter(
         <Route element={<RequireAuth />}>
           <Route index element={<Navigate to="/dashboard" replace />} />
           <Route path="dashboard" element={<Dashboard />} />
+          <Route path="/orders" element={<Orders />} />
           <Route path="/products" element={<Products />} />
           <Route path="/stocks" element={<Stocks />} />
           <Route path="/workers" element={<Workers />} />

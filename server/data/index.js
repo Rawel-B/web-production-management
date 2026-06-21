@@ -910,7 +910,7 @@ export const dataUsers = [
     phoneNumber: "+1 239 507 4781",
     tasks: [],
     role: "unauthorized",
-    permission: "products",
+    permission: ["Dashboard", "Products", "Stocks"],
   },
   {
     name: "Chris Jacobs",
@@ -922,7 +922,7 @@ export const dataUsers = [
     phoneNumber: "+1 239 507 4781",
     tasks: [],
     role: "unauthorized",
-    permission: "location",
+    permission: ["Dashboard", "Orders"],
   },
   {
     name: "John Doe",
@@ -934,7 +934,7 @@ export const dataUsers = [
     phoneNumber: "+1 234 567 8901",
     tasks: [],
     role: "worker",
-    permission: "location",
+    permission: ["Dashboard", "Orders"],
   },
   {
     name: "Jane Smith",
@@ -946,7 +946,7 @@ export const dataUsers = [
     phoneNumber: "+1 234 567 8902",
     tasks: [],
     role: "worker",
-    permission: "location",
+    permission: ["Dashboard", "Orders"],
   },
   {
     name: "Sam Wayne",
@@ -958,7 +958,7 @@ export const dataUsers = [
     phoneNumber: "+1 234 567 9087",
     tasks: [],
     role: "worker",
-    permission: "location",
+    permission: ["Dashboard", "Orders"],
   },
   {
     name: "Anthony Lenny",
@@ -970,7 +970,7 @@ export const dataUsers = [
     phoneNumber: "+1 950 170 0037",
     tasks: [],
     role: "worker",
-    permission: "location",
+    permission: ["Dashboard", "Orders"],
   },
   {
     name: "Alice Johnson",
@@ -982,7 +982,7 @@ export const dataUsers = [
     phoneNumber: "+1 234 567 8903",
     tasks: [],
     role: "manager",
-    permission: "management",
+    permission: ["Support", "Workers", "Performance"],
   },
   {
     name: "Bob Brown",
@@ -994,7 +994,7 @@ export const dataUsers = [
     phoneNumber: "+1 234 567 8904",
     tasks: [],
     role: "worker",
-    permission: "products",
+    permission: ["Dashboard", "Products", "Stocks"],
   },
   {
     name: "Charlie Davis",
@@ -1006,7 +1006,7 @@ export const dataUsers = [
     phoneNumber: "+1 234 567 8905",
     tasks: [],
     role: "manager",
-    permission: "stocks",
+    permission: ["Support", "Workers", "Performance"],
   },
   {
     name: "David Harris",
@@ -1018,7 +1018,7 @@ export const dataUsers = [
     phoneNumber: "+1 234 567 8906",
     tasks: [],
     role: "worker",
-    permission: "location",
+    permission: ["Dashboard", "Orders"],
   },
   {
     name: "Eva Martinez",
@@ -1030,7 +1030,7 @@ export const dataUsers = [
     phoneNumber: "+1 234 567 8907",
     tasks: [],
     role: "manager",
-    permission: "dashboard",
+    permission: ["Support", "Workers", "Performance"],
   },
   {
     name: "Frank White",
@@ -1042,7 +1042,7 @@ export const dataUsers = [
     phoneNumber: "+1 234 567 8908",
     tasks: [],
     role: "worker",
-    permission: "management",
+    permission: ["Dashboard", "Products", "Stocks"],
   },
   {
     name: "Grace King",
@@ -1054,7 +1054,7 @@ export const dataUsers = [
     phoneNumber: "+1 234 567 8909",
     tasks: [],
     role: "worker",
-    permission: "stocks",
+    permission: ["Dashboard", "Products", "Stocks"],
   },
   {
     name: "Johnny Miller",
@@ -1066,9 +1066,9 @@ export const dataUsers = [
     phoneNumber: "+1 514 123 4567",
     tasks: [],
     role: "worker",
-    permission: "products",
+    permission: ["Dashboard", "Products", "Stocks"],
   },
-  {
+  { //====> Administrator
     name: "Administrator",
     email: "admin@prodm.com",
     password: "admin",
@@ -1078,7 +1078,7 @@ export const dataUsers = [
     phoneNumber: "+1 234 567 8910",
     tasks: [],
     role: "admin",
-    permission: "management",
+    permission: [],
   }
 ]
 

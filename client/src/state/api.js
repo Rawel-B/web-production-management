@@ -9,6 +9,8 @@ export const api = createApi({
     "User",
     "Workers",
     "Managers",
+    //=============> Orders
+    "Orders",
     //=============> Stocks
     "Stocks",
     //=============> Products
@@ -85,6 +87,19 @@ export const api = createApi({
         body: editFormData,
       }),
       invalidatesTags: ['User', "Workers", "Managers"]
+    }),
+    //=============> Orders
+    getOrders: builder.query({
+      query: () => `/orders`,
+      providesTags: ["Orders"],
+    }),
+    postNewOrder: builder.mutation({
+      query: (newOrder) => ({
+        url: "/orders/releaseorder",
+        method: "POST",
+        body: newOrder,
+      }),
+      invalidatesTags: ["Orders"],
     }),
     //=============> Products
     getProducts: builder.query({
@@ -174,6 +189,8 @@ export const {
   useGetAllManagersQuery,
   useDeleteUserMutation,
   useUpdateUserMutation,
+  useGetOrdersQuery,
+  usePostNewOrderMutation,
   useGetProductsQuery,
   useDeleteProductMutation,
   useGetStocksQuery,

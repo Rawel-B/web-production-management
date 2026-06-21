@@ -13,6 +13,7 @@ import productRoutes from "./routes/productRoutes.js";
 import salesRoutes from "./routes/salesRoutes.js";
 import stockRoutes from "./routes/stockRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
+import orderRoutes from "./routes/orderRoutes.js";
 
 // Data
 import {
@@ -27,6 +28,7 @@ import Stock from "./models/Stock.js";
 import User from "./models/User.js";
 import Product from "./models/Product.js";
 import Sales from "./models/Sales.js";
+import Order from "./models/Order.js";
 
 // CONFIGURATION
 dotenv.config();
@@ -57,6 +59,7 @@ app.use("/sales", salesRoutes);
 app.use("/stocks", stockRoutes);
 app.use("/products", productRoutes);
 app.use("/user", userRoutes);
+app.use("/orders", orderRoutes);
 
 // MONGOOSE SETUP
 const mongooseOptions = {
@@ -121,7 +124,6 @@ mongoose.connect(process.env.MONGO_URL).then(async () => {
             return userWithTasks;
           })
         );
-    
 
         //====> Fill Database Records
         const [userResult, stockResult] = await Promise.all([

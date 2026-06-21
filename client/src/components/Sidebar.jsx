@@ -38,6 +38,7 @@ import {
   TrendingUpOutlined,
   PieChartOutlined,
   InventoryOutlined,
+  ViewListOutlined
 } from "@mui/icons-material";
 import { CircularProgress } from "@mui/material";
 import { useEffect, useState } from "react";
@@ -50,6 +51,7 @@ import { useLogoutMutation } from '@/state/api';
 const navItems = [
   { text: "Dashboard", icon: <HomeOutlined /> },
   { text: "Modules", icon: null },
+  { text: "Orders", icon: <ViewListOutlined /> },
   { text: "Products", icon: <ShoppingCartOutlined /> },
   { text: "Stocks", icon: <InventoryOutlined /> },
   { text: "Geography", icon: <PublicOutlined /> },
@@ -116,9 +118,24 @@ export default function Sidebar({ drawerWidth, isSidebarOpen, setIsSidebarOpen, 
 
   const visibleNavItems = navItems.filter(({ text }) => {
     const role = user?.role?.toLowerCase();
-    if (role === 'admin') return true;
-    if (role === 'manager') return ['Sales','Overview','Daily','Monthly','Breakdown','Management','Workers','Support','Admin','Performance'].includes(text);
-    if (role === 'worker') return ['Dashboard','Modules','Products','Stocks','Geography'].includes(text);
+    const permissions = user?.permission?.map(p => p.toLowerCase()) || [];
+    //const managerAccess = ['Overview','Daily','Monthly','Breakdown','Workers','Support','Admin','Performance'];
+    //const workerAccess = ['Dashboard', 'Orders','Products','Stocks','Geography'];
+
+    if (role === 'admin') return true; // Override All
+    if (role === 'manager') {
+      if (text?.toLowerCase() === 'sales' || text?.toLowerCase() === 'management') { // Side Bar Title Not An Actual Item (Not Included In Permissions)
+        return true;
+      } else {
+        return permissions.includes(text?.toLowerCase());
+      }    }
+    if (role === 'worker') {
+      if (text?.toLowerCase() === 'modules') { // Side Bar Title Not An Actual Item (Not Included In Permissions)
+        return true;
+      } else {
+        return permissions.includes(text?.toLowerCase());
+      }
+     }
 
     return false;
   });

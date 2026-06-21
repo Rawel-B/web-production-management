@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import bcrypt from 'bcryptjs';
+import bcrypt from "bcryptjs";
 
 const taskTypes = {
   INVENTORY_CHECK: "Inventory Check",
@@ -41,16 +41,16 @@ const UserSchema = new mongoose.Schema(
       default: "unauthorized",
     },
     permission: {
-      type: String,
-      enum: ["stocks", "location", "products", "dashboard", "management"],
-      default: "dashboard",
+      type: [String],
+      enum: ["Overview","Daily","Monthly","Breakdown","Workers","Support","Admin","Performance","Dashboard", "Orders","Products","Stocks","Geography"],
+      default: ["Dashboard"],
     }
   },
   { timestamps: true, collection: "users", _id: true }
 );
 
-UserSchema.pre('save', async function(next) {
-  if (!this.isModified('password')) return next();
+UserSchema.pre("save", async function(next) {
+  if (!this.isModified("password")) return next();
   
   try {
     const salt = await bcrypt.genSalt(10);

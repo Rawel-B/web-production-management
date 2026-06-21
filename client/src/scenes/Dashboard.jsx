@@ -1,224 +1,59 @@
-import BreakdownChart from "@/components/BreakdownChart";
-import FlexBetween from "@/components/FlexBetween";
-import Header from "@/components/Header";
-import OverviewChart from "@/components/OverviewChart";
-import StatBox from "@/components/StatBox";
-import { useGetDashboardQuery } from "@/state/api";
-import {
-  DownloadOutlined,
-  Email,
-  PointOfSale,
-  PersonAdd,
-  Traffic,
-} from "@mui/icons-material";
-import {
-  Box,
-  Button,
-  Typography,
-  useTheme,
-  useMediaQuery,
-} from "@mui/material";
-import CircularProgress from "@mui/material/CircularProgress";
+import React, { useState, useEffect } from 'react';
 
-import { DataGrid } from "@mui/x-data-grid";
+const MachineDashboard = () => {
+  const [machines, setMachines] = useState([]);
 
-function Dashboard() {
-  const theme = useTheme();
-  const isNonMediumScreens = useMediaQuery("(min-width: 1200px)");
-  const { data, isLoading } = useGetDashboardQuery();
-
-  const columns = [
-    {
-      field: "_id",
-      headerName: "ID",
-      flex: 1,
-    },
-    {
-      field: "userId",
-      headerName: "User ID",
-      flex: 1,
-    },
-    {
-      field: "createdAt",
-      headerName: "CreatedAt",
-      flex: 1,
-    },
-    {
-      field: "stocks",
-      headerName: "# of Stocks",
-      flex: 0.5,
-      sortable: false,
-      renderCell: (params) => params.value.length,
-    },
-    {
-      field: "cost",
-      headerName: "Cost",
-      flex: 1,
-      renderCell: (params) => `$${Number(params.value).toFixed(2)}`,
-    },
-  ];
-
-  if (!data || isLoading)
-    return (
-      <Box
-        width="100%"
-        height="100%"
-        minHeight="80vh"
-        display="flex"
-        justifyContent="center"
-        alignItems="center"
-      >
-        <CircularProgress color="secondary" />
-      </Box>
-    );
+  useEffect(() => {
+    const interval = setInterval(() => {
+      fetch('http://127.0.0.1:5000/api/machines')
+        .then(res => res.json())
+        .then(data => setMachines(data));
+    }, 1000);
+    return () => clearInterval(interval);
+  }, []);
 
   return (
-    <Box m="1.5rem 2.5rem">
-      <FlexBetween>
-        <Header title="DASHBOARD" subtitle="Welcome to your dashboard" />
-
-        <Box>
-          <Button
-            sx={{
-              backgroundColor: theme.palette.secondary.main,
-              color: theme.palette.background.alt,
-              fontSize: "14px",
-              fontWeight: "bold",
-              padding: "10px 20px",
-              "&:hover": {
-                backgroundColor: theme.palette.secondary.light,
-              },
-            }}
-          >
-            <DownloadOutlined sx={{ mr: "10px" }} />
-            Download Reports
-          </Button>
-        </Box>
-      </FlexBetween>
-
-      <Box
-        mt="20px"
-        display="grid"
-        gridTemplateColumns="repeat(12, 1fr)"
-        gridAutoRows="160px"
-        gap="20px"
-        sx={{
-          "& > div": { gridColumn: isNonMediumScreens ? undefined : "span 12" },
-        }}
-      >
-        <StatBox
-          title="Total Customers"
-          value={data && data.totalCustomers}
-          increase="+14%"
-          description="Since last month"
-          icon={
-            <Email
-              sx={{ color: theme.palette.secondary[300], fontSize: "26px" }}
-            />
-          }
-        />
-        <StatBox
-          title="Sales Today"
-          value={data && data.todayStats.totalSales}
-          increase="+21%"
-          description="Since last month"
-          icon={
-            <PointOfSale
-              sx={{ color: theme.palette.secondary[300], fontSize: "26px" }}
-            />
-          }
-        />
-        <Box
-          gridColumn="span 8"
-          gridRow="span 2"
-          backgroundColor={theme.palette.background.alt}
-          p="1rem"
-          borderRadius="0.55rem"
-        >
-          <OverviewChart view="sales" isDashboard={true} />
-        </Box>
-        <StatBox
-          title="Monthly Sales"
-          value={data && data.thisMonthStats.totalSales}
-          increase="+5%"
-          description="Since last month"
-          icon={
-            <PersonAdd
-              sx={{ color: theme.palette.secondary[300], fontSize: "26px" }}
-            />
-          }
-        />
-        <StatBox
-          title="Yearly Sales"
-          value={data && data.yearlySalesTotal}
-          increase="+43%"
-          description="Since last month"
-          icon={
-            <Traffic
-              sx={{ color: theme.palette.secondary[300], fontSize: "26px" }}
-            />
-          }
-        />
-
-        <Box
-          gridColumn="span 8"
-          gridRow="span 3"
-          sx={{
-            "& .MuiDataGrid-root": {
-              border: "none",
-              borderRadius: "5rem",
-            },
-            "& .MuiDataGrid-cell": {
-              borderBottom: "none",
-            },
-            "& .MuiDataGrid-columnHeaders": {
-              backgroundColor: theme.palette.background.alt,
-              color: theme.palette.secondary[100],
-              borderBottom: "none",
-            },
-            "& .MuiDataGrid-virtualScroller": {
-              backgroundColor: theme.palette.background.alt,
-            },
-            "& .MuiDataGrid-footerContainer": {
-              backgroundColor: theme.palette.background.alt,
-              color: theme.palette.secondary[100],
-              borderTop: "none",
-            },
-            "& .MuiDataGrid-toolbarContainer .MuiButton-text": {
-              color: `${theme.palette.secondary[200]} !important`,
-            },
-          }}
-        >
-          <DataGrid
-            loading={isLoading || !data}
-            getRowId={(row) => row._id}
-            rows={(data && data.transactions) || []}
-            columns={columns}
-          />
-        </Box>
-        <Box
-          gridColumn="span 4"
-          gridRow="span 3"
-          backgroundColor={theme.palette.background.alt}
-          p="1.5rem"
-          borderRadius="0.55rem"
-        >
-          <Typography variant="h6" sx={{ color: theme.palette.secondary[100] }}>
-            Sales By Category
-          </Typography>
-          <BreakdownChart isDashboard={true} />
-          <Typography
-            p="0 0.6rem"
-            fontSize="0.8rem"
-            sx={{ color: theme.palette.secondary[200] }}
-          >
-            Breakdown of real states and information via category for revenue
-            made for this year and total sales.
-          </Typography>
-        </Box>
-      </Box>
-    </Box>
+    <div style={{ padding: '20px', backgroundColor: '#f4f7f6', minHeight: '100vh' }}>
+      <h1>🏭 Production Line Monitor</h1>
+      <div style={{ display: 'flex', gap: '20px', marginTop: '30px' }}>
+        {machines.map(m => (
+          <div key={m.machineId} style={cardStyle}>
+            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+              <h3>{m.machineName}</h3>
+              <span style={statusBadge(m.status)}>{m.status}</span>
+            </div>
+            <hr />
+            <div style={{ textAlign: 'center', padding: '20px' }}>
+              <p>Total Cycles Processed</p>
+              <h2 style={{ fontSize: '3rem', margin: '10px 0' }}>{m.lastCycleCount}</h2>
+            </div>
+            <p style={{ fontSize: '0.8rem', color: '#888' }}>
+              Last Signal: {new Date(m.lastSeen).toLocaleTimeString()}
+            </p>
+            <div style={flowIndicator(m.status)}></div>
+          </div>
+        ))}
+      </div>
+    </div>
   );
-}
+};
 
-export default Dashboard;
+const cardStyle = {
+  background: '#fff', borderTop: '5px solid #2ecc71',
+  padding: '20px', borderRadius: '8px', width: '300px',
+  boxShadow: '0 4px 6px rgba(0,0,0,0.1)'
+};
+
+const statusBadge = (status) => ({
+  backgroundColor: status === 'RUNNING' ? '#2ecc71' : '#e74c3c',
+  color: '#fff', padding: '4px 8px', borderRadius: '4px', fontSize: '0.7rem'
+});
+
+const flowIndicator = (status) => ({
+  height: '4px', width: '100%',
+  backgroundColor: status === 'RUNNING' ? '#2ecc71' : '#ccc',
+  boxShadow: status === 'RUNNING' ? '0 0 10px #2ecc71' : 'none',
+  marginTop: '10px'
+});
+
+export default MachineDashboard;
